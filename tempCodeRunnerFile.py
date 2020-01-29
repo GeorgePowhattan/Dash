@@ -15,8 +15,8 @@ app.layout = html.Div(children=[
                     id='example-graph1',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': 'Patria'},
+                            {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'Dealing'},
+                            {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': 'ALM'},
                         ],
                         'layout': {
                             'title': 'Dash Data Visualization - Tab one'
@@ -30,8 +30,8 @@ app.layout = html.Div(children=[
                     id='example-graph2',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'bar', 'name': 'CSOB'},
+                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'bar', 'name': 'Patria'},
                         ],
                         'layout': {
                             'title': 'Dash Data Visualization - Tab two'
