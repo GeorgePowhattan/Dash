@@ -40,9 +40,7 @@ app.layout = html.Div(children=[
                     )
                 ]),   
             ]),
-
-        # html.Div(id='tabs-content'),
-        
+      
         ])
 
 
