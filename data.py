@@ -6,27 +6,29 @@ import random
 import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Date, Float
 
 
-engine = sqlalchemy.create_engine('sqlite:///site.db', echo=True)
-
+engine = sqlalchemy.create_engine('sqlite:///site.db', echo=True)  # sqlite:////absolute/path/to/database
 Base = declarative_base()
-
 session = sessionmaker(bind=engine)()
 
-
+# Scrape the data from web into dataframe:
 def read_data(url):
     df = pd.read_csv(url, sep='|',skiprows=0,verbose=False,encoding ='utf-8',header=0)
     df.iloc[:,0] = pd.to_datetime(df.iloc[:,0])
+    df.dropna(axis=0, inplace=True)
     return df
 
-# db tables:
+# Database:
 class Loans(Base):
-    id = Column(Integer,primary_key=True)
-    date = Column(Float,)
-    date = Column(Float,)
-
+    id = Column(Integer, primary_key=True)
+    datum = Column(Date)
+    spotreba = Column(Float)
+    bydleni = Column(Float)
+    ostatni = Column(Float)
+    def __repr__(self):
+        return("Loans: {}, {}, {}, {}".format(self.datum,self.spotreba,self.bydleni,self.ostatni))
 
 if __name__ == '__main__':
 
@@ -35,4 +37,5 @@ if __name__ == '__main__':
     # Get the df:
     loans = read_data(url)
 
-    # Nasypat df do db: Jak manipuovat s celymi radky?
+    # Nasypat df do db: Jak manipulovat s celymi radky?
+    for 
