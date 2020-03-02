@@ -12,23 +12,27 @@ Base = declarative_base()
 
 engine = sqlalchemy.create_engine(path, echo=True)
 
-# Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 Session = sessionmaker(bind=engine)
+
 
 class Loans(Base):
     __tablename__ = "loans"
     id = Column(Integer, primary_key=True)
     spotreba = Column(Integer) # Float
     
+    def __init__(self, id, spotreba):
+        self.id = id
+        self.spotreba = spotreba
+
     def __repr__(self):
         return "<Loans(Datum='', spotreba='%s)>" % (self.spotreba)
 
 session = Session()
 
-loan1 = Loans()
-loan1.id = 0
-loan1.spotreba=194785
+
+loan1 = Loans(0, 20000)
 
 session.add(loan1)
 session.commit()
