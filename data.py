@@ -38,4 +38,4 @@ if __name__ == '__main__':
     loans = read_data(url)
 
     # Nasypat df do db: Jak manipulovat s celymi radky?
-    for 
+     
