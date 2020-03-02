@@ -38,6 +38,9 @@ def data_entry():
     conn.close()
 
 # Read from database:
+def read_from_db():
+    c.execute('SELECT * FROM loans')
+    data = c.fetchall()
 # datetime.strptime(xyz, '%d.%m.%Y')
 
 
