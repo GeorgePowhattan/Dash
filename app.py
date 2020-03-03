@@ -32,7 +32,8 @@ for table in tables:
     data[table] = pd.DataFrame(data[table])
 '''
 data['loans'] = pd.read_sql("SELECT * FROM loans", engine)
-
+#print(data['loans'].iloc[:,1])
+#print(data['loans'].iloc[:,1:])
 time.sleep(5)
 
 app.layout = html.Div(children=[
@@ -44,7 +45,7 @@ app.layout = html.Div(children=[
                     figure={
                         'data': [
                             dict(x= data['loans'].iloc[:,1], # [ datetime.strptime(data['loans'].iloc[:,1], '%d.%m.%Y') for row in data['loans'] ]
-                                y=data['loans'].iloc[:,1:],
+                                y=data['loans'].iloc[:,2],
                                 type='line',
                                 name='loans'),
                         ],
