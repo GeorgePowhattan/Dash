@@ -1,6 +1,8 @@
 import pandas as pd
 import sqlite3
 import os
+import matplotlib.pyplot as plt
+from datetime import datetime
 
 basedir = os.path.dirname(os.path.abspath(__file__))
 path = str(basedir)+'/data.db'
@@ -39,14 +41,37 @@ def data_entry():
 
 # Read from database:
 def read_from_db():
-    c.execute('SELECT * FROM loans')
+    c.execute("SELECT * FROM loans WHERE datum='31.12.2016'")
     data = c.fetchall()
+    
+    #return data
+
+def graph():
+    c.execute("SELECT * FROM loans")
+    data = c.fetchall()
+    datum = [datetime.strptime(row[0], '%d.%m.%Y') for row in data]
+    spotreba = [row[1] for row in data]
+    print(type(datum[0]))
+    plt.plot(datum, spotreba)
+    plt.show()
+    
+    
+    '''datum = [row[0] for row in data]
+    data = c.fetchall()  #[row[0] for row in c.fetchall()]
+    # return datum, spotreba
+'''
 # datetime.strptime(xyz, '%d.%m.%Y')
 
 
 if __name__ == "__main__":
-    create_table()
-    data_entry()
-
-
+    #create_table()
+    #data_entry()
+    #read_from_db()
+    graph()
+    #print(type(datum))
+    #print(len(datum))
+    #print(type(spotreba))
+    #print(len(spotreba))
+    # plt.plot(datum, spotreba)
+    # plt.show()
 # Jak toto zvlada nova datam ktera v db uz jsou?
