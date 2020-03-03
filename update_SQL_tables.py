@@ -48,5 +48,3 @@ if __name__ == "__main__":
         data[table] = read_data(urls[url])
         data[table].to_sql(table, con=engine, if_exists='replace')
 
-
-# engine.execute("SELECT * FROM loans").fetchall()

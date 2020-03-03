@@ -6,6 +6,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, Date, Float
+
 import os
 import time
 from datetime import datetime
@@ -29,10 +30,6 @@ data = {}
 for table in tables:
     data[table] = pd.read_sql("SELECT * FROM {}".format(table), engine, parse_dates='Obdobi')
 
-#print(data['loans'].iloc[:,1:])
-#print(type(data['loans'].iloc[1,1]))
-#print(data['loans'].iloc[1,1])
-#print(data['loans']['Obdobi'])
 
 app.layout = html.Div(children=[
         dcc.Tabs(id="tabs", value='tab-1', children=[
@@ -139,14 +136,20 @@ app.layout = html.Div(children=[
             # Tab 3
             dcc.Tab(label='GDP', value='tab-3',children=[
                 dcc.Graph(
-                    id='example-graph3',
+                    id='Tab3 graph1',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                            dict(x= data['gdp'].iloc[:,1],
+                                y=data['gdp'].iloc[:,3],
+                                type='line',
+                                name=data['gdp'].columns[3]),
+                            dict(x= data['gdp'].iloc[:,1],
+                                y=data['gdp'].iloc[:,4],
+                                type='line',
+                                name=data['gdp'].columns[4])
                         ],
                         'layout': {
-                            'title': 'Dash Data Visualization - Tab two'
+                            'title': 'GDP changes y/y [%]'
                             }
                         }
                     )
@@ -155,14 +158,16 @@ app.layout = html.Div(children=[
             # Tab 4
             dcc.Tab(label='CPI', value='tab-4',children=[
                 dcc.Graph(
-                    id='example-graph4',
+                    id='Tab4 graph1',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                            dict(x= data['cpi'].iloc[:,1],
+                                y=data['cpi'].iloc[:,5],
+                                type='line',
+                                name=data['cpi'].columns[5])
                         ],
                         'layout': {
-                            'title': 'Dash Data Visualization - Tab two'
+                            'title': 'Inflation [%]'
                             }
                         }
                     )
@@ -172,5 +177,5 @@ app.layout = html.Div(children=[
         ])
 
 
-#if __name__ == '__main__':
-app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=True)

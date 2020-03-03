@@ -40,7 +40,7 @@ app.layout = html.Div(children=[
             # Tab 1
             dcc.Tab(label='Loans', value='tab-1',children=[
                 dcc.Graph(
-                    id='example-graph1',
+                    id='Loans absolute',
                     figure={
                         'data': [
                             dict(x= data['loans'].iloc[:,1],
@@ -58,6 +58,29 @@ app.layout = html.Div(children=[
                         ],
                         'layout': 
                             dict(title= 'Loans - total in CZK bil.',
+                            traceorder="normal")
+                            
+                        }
+                    ),
+                dcc.Graph(
+                    id='Loans relative',
+                    figure={
+                        'data': [
+                            dict(x= data['loans'].iloc[:,1],
+                                y=data['loans'].iloc[:,2],
+                                type='line',
+                                name=data['loans'].columns[2]),
+                            dict(x= data['loans'].iloc[:,1],
+                                y=data['loans'].iloc[:,3],
+                                type='line',
+                                name=data['loans'].columns[3]),
+                            dict(x= data['loans'].iloc[:,1],
+                                y=data['loans'].iloc[:,4],
+                                type='line',
+                                name=data['loans'].columns[4])
+                        ],
+                        'layout': 
+                            dict(title= 'Loans - relative y/y change [%]',
                             traceorder="normal")
                             
                         }
@@ -116,14 +139,20 @@ app.layout = html.Div(children=[
             # Tab 3
             dcc.Tab(label='GDP', value='tab-3',children=[
                 dcc.Graph(
-                    id='example-graph3',
+                    id='Tab3 graph1',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                            dict(x= data['gdp'].iloc[:,1],
+                                y=data['gdp'].iloc[:,3],
+                                type='line',
+                                name=data['gdp'].columns[3]),
+                            dict(x= data['gdp'].iloc[:,1],
+                                y=data['gdp'].iloc[:,4],
+                                type='line',
+                                name=data['gdp'].columns[4])
                         ],
                         'layout': {
-                            'title': 'Dash Data Visualization - Tab two'
+                            'title': 'GDP changes y/y [%]'
                             }
                         }
                     )
@@ -132,14 +161,16 @@ app.layout = html.Div(children=[
             # Tab 4
             dcc.Tab(label='CPI', value='tab-4',children=[
                 dcc.Graph(
-                    id='example-graph4',
+                    id='Tab4 graph1',
                     figure={
                         'data': [
-                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
-                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                            dict(x= data['cpi'].iloc[:,1],
+                                y=data['cpi'].iloc[:,5],
+                                type='line',
+                                name=data['cpi'].columns[5])
                         ],
                         'layout': {
-                            'title': 'Dash Data Visualization - Tab two'
+                            'title': 'Inflation [%]'
                             }
                         }
                     )
