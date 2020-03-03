@@ -30,6 +30,11 @@ data = {}
 for table in tables:
     data[table] = pd.read_sql("SELECT * FROM {}".format(table), engine, parse_dates='Obdobi')
 
+data['loans_rel'] = pd.concat([data['loans'].iloc[:,1], data['loans'].iloc[:,2:].pct_change(12)], axis=1)
+
+
+print(data['loans_rel'].head(20))
+
 
 app.layout = html.Div(children=[
         dcc.Tabs(id="tabs", value='tab-1', children=[
@@ -63,18 +68,18 @@ app.layout = html.Div(children=[
                     id='Loans relative',
                     figure={
                         'data': [
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,2],
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,1],
                                 type='line',
-                                name=data['loans'].columns[2]),
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,3],
+                                name=data['loans_rel'].columns[1]),
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,2],
                                 type='line',
-                                name=data['loans'].columns[3]),
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,4],
+                                name=data['loans_rel'].columns[2]),
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,3],
                                 type='line',
-                                name=data['loans'].columns[4])
+                                name=data['loans_rel'].columns[3])
                         ],
                         'layout': 
                             dict(title= 'Loans - relative y/y change [%]',

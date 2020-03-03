@@ -6,6 +6,7 @@ import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String, Date, Float
+
 import os
 import time
 from datetime import datetime
@@ -29,10 +30,11 @@ data = {}
 for table in tables:
     data[table] = pd.read_sql("SELECT * FROM {}".format(table), engine, parse_dates='Obdobi')
 
-#print(data['loans'].iloc[:,1:])
-#print(type(data['loans'].iloc[1,1]))
-#print(data['loans'].iloc[1,1])
-#print(data['loans']['Obdobi'])
+data['loans_rel'] = pd.concat([data['loans'].iloc[:,1], data['loans'].iloc[:,2:].pct_change(12)], axis=1)
+
+
+print(data['loans_rel'].head(20))
+
 
 app.layout = html.Div(children=[
         dcc.Tabs(id="tabs", value='tab-1', children=[
@@ -66,18 +68,18 @@ app.layout = html.Div(children=[
                     id='Loans relative',
                     figure={
                         'data': [
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,2],
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,1],
                                 type='line',
-                                name=data['loans'].columns[2]),
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,3],
+                                name=data['loans_rel'].columns[1]),
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,2],
                                 type='line',
-                                name=data['loans'].columns[3]),
-                            dict(x= data['loans'].iloc[:,1],
-                                y=data['loans'].iloc[:,4],
+                                name=data['loans_rel'].columns[2]),
+                            dict(x= data['loans_rel'].iloc[:,0],
+                                y=data['loans_rel'].iloc[:,3],
                                 type='line',
-                                name=data['loans'].columns[4])
+                                name=data['loans_rel'].columns[3])
                         ],
                         'layout': 
                             dict(title= 'Loans - relative y/y change [%]',
@@ -180,5 +182,5 @@ app.layout = html.Div(children=[
         ])
 
 
-#if __name__ == '__main__':
-app.run_server(debug=True)
+if __name__ == '__main__':
+    app.run_server(debug=True)
