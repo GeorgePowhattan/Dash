@@ -26,39 +26,97 @@ app = dash.Dash(external_stylesheets=external_stylesheets)
 # Tables
 tables = ['loans', 'rates', 'gdp', 'cpi']
 data = {}
-'''
 for table in tables:
-    data[table] = engine.execute("SELECT * FROM {}".format(str(table))).fetchall()
-    data[table] = pd.DataFrame(data[table])
-'''
-data['loans'] = pd.read_sql("SELECT * FROM loans", engine)
-#print(data['loans'].iloc[:,1])
+    data[table] = pd.read_sql("SELECT * FROM {}".format(table), engine, parse_dates='Obdobi')
+
 #print(data['loans'].iloc[:,1:])
-time.sleep(5)
+#print(type(data['loans'].iloc[1,1]))
+#print(data['loans'].iloc[1,1])
+#print(data['loans']['Obdobi'])
 
 app.layout = html.Div(children=[
         dcc.Tabs(id="tabs", value='tab-1', children=[
+            
             # Tab 1
-            dcc.Tab(label='Tab one', value='tab-1',children=[
+            dcc.Tab(label='Loans', value='tab-1',children=[
                 dcc.Graph(
                     id='example-graph1',
                     figure={
                         'data': [
-                            dict(x= data['loans'].iloc[:,1], # [ datetime.strptime(data['loans'].iloc[:,1], '%d.%m.%Y') for row in data['loans'] ]
+                            dict(x= data['loans'].iloc[:,1],
                                 y=data['loans'].iloc[:,2],
                                 type='line',
-                                name='loans'),
+                                name=data['loans'].columns[2]),
+                            dict(x= data['loans'].iloc[:,1],
+                                y=data['loans'].iloc[:,3],
+                                type='line',
+                                name=data['loans'].columns[3]),
+                            dict(x= data['loans'].iloc[:,1],
+                                y=data['loans'].iloc[:,4],
+                                type='line',
+                                name=data['loans'].columns[4])
                         ],
-                        'layout': {
-                            'title': 'Dash Data Visualization - Tab one'
-                            }
+                        'layout': 
+                            dict(title= 'Loans - total in CZK bil.',
+                            traceorder="normal")
+                            
                         }
                     )
             ]),
+            
             # Tab 2
-            dcc.Tab(label='Tab two', value='tab-2',children=[
+            dcc.Tab(label='Rates', value='tab-2',children=[
                 dcc.Graph(
-                    id='example-graph2',
+                    id='Tab2 Graph1',
+                    figure={
+                        'data': [
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,2],
+                                type='line',
+                                name=data['rates'].columns[2]),
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,3],
+                                type='line',
+                                name=data['rates'].columns[3]),
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,4],
+                                type='line',
+                                name=data['rates'].columns[4]),
+                        ],
+                        'layout': 
+                            dict(title= 'Deposit rates [%]',
+                                legend_orientation="h")
+                            
+                        }
+                    ),
+                dcc.Graph(
+                    id='Tab2 Graph2',
+                    figure={
+                        'data': [
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,7],
+                                type='line',
+                                name=data['rates'].columns[7]),
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,8],
+                                type='line',
+                                name=data['rates'].columns[8]),
+                            dict(x= data['rates'].iloc[:,1],
+                                y=data['rates'].iloc[:,11],
+                                type='line',
+                                name=data['rates'].columns[11]),
+                        ],
+                        'layout': 
+                            dict(title= 'Loan rates [%]',
+                            )
+                            
+                        }
+                    )
+                ]),
+            # Tab 3
+            dcc.Tab(label='GDP', value='tab-3',children=[
+                dcc.Graph(
+                    id='example-graph3',
                     figure={
                         'data': [
                             {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
@@ -69,8 +127,24 @@ app.layout = html.Div(children=[
                             }
                         }
                     )
-                ]),   
-            ]),
+                ]),
+            
+            # Tab 4
+            dcc.Tab(label='CPI', value='tab-4',children=[
+                dcc.Graph(
+                    id='example-graph4',
+                    figure={
+                        'data': [
+                            {'x': [1, 2, 3], 'y': [1, 2, 3], 'type': 'line', 'name': 'CSOB'},
+                            {'x': [1, 2, 3], 'y': [3, 1, 2], 'type': 'line', 'name': 'Patria'},
+                        ],
+                        'layout': {
+                            'title': 'Dash Data Visualization - Tab two'
+                            }
+                        }
+                    )
+                ])   
+            ])
       
         ])
 
