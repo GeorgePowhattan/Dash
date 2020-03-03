@@ -19,11 +19,10 @@ engine = sqlalchemy.create_engine(path, echo=True)  # sqlite:////absolute/path/t
 Base = declarative_base()
 session = sessionmaker(bind=engine)()
 
-# Dash
+#Dash
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(external_stylesheets=external_stylesheets)
 
-# Tables
 tables = ['loans', 'rates', 'gdp', 'cpi']
 data = {}
 '''
