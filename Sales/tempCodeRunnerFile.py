@@ -25,15 +25,15 @@ app.layout = html.Div([
     
     html.Div(children=[
         html.Div([
-            html.H3('Total earned:'),
+            html.H2('Total earned:'),
             html.H1('{:,d} Kc'.format(df['FX'].sum()).replace(',',' '))
         ], style={'padding': 10}),
         html.Div([
-            html.H3('Total nominal:'),
+            html.H2('Total nominal:'),
             html.H1('{:,d} Kc'.format(df['FX'].sum()).replace(',',' '))
         ], style={'padding': 10}),
         html.Div([
-            html.H3('Total deals:'),
+            html.H2('Total deals:'),
             html.H1('{:,d}x'.format(df['FX'].count()).replace(',',' ')) 
         ], style={'padding': 10})
     ], style={'columnCount': 3}),
