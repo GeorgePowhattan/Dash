@@ -25,20 +25,21 @@ app.layout = html.Div([
     
     html.Div(children=[
         html.Div([
-            html.H2('Total earned:'),
+            html.H3('Total earned:'),
             html.H1('{:,d} Kc'.format(df['FX'].sum()).replace(',',' '))
         ], style={'padding': 10}),
         html.Div([
-            html.H2('Total nominal:'),
-            html.H1('{:,d} Kc'.format(df['FX'].sum()).replace(',',' '))
+            html.H3('Total earned (selected month):'),
+            html.H1(id='info-sum-month')
         ], style={'padding': 10}),
         html.Div([
-            html.H2('Total deals:'),
-            html.H1('{:,d}x'.format(df['FX'].count()).replace(',',' ')) 
+            html.H3('Total deals:'),
+            html.H1(id='info-count') 
         ], style={'padding': 10})
     ], style={'columnCount': 3}),
+    
     html.Br(),
-    html.Br(),
+    
     dcc.Slider(
             id='month-slider',
             min=0,
@@ -61,8 +62,11 @@ app.layout = html.Div([
             },
             
         ),
-    dcc.Graph('graph')
-])
+    dcc.Graph('graph'),
+    html.Br(),
+    html.Div('Some more charts...')
+
+], style={'font-family': 'verdana'})
 
 @app.callback(
     Output('graph', 'figure'),
@@ -71,12 +75,29 @@ def update_figure(selected_month):
     df_group = df[df['month'] == selected_month]
     df_group = df_group.groupby('Region').sum()
 
-    fig = px.bar(df_group, x=df_group.index, y="FX"
+    fig = px.bar(df_group, x=df_group.index, y="FX",
+        title="Celkove poplatky v danem mesici podle kraje "
         )
 
     fig.update_layout()
 
     return fig
+
+
+@app.callback(
+    Output('info-sum-month', 'children'),
+    [Input('month-slider', 'value')])
+def infoFigure(selected_month):
+    df_filtered = df[df['month'] == selected_month]
+    return ('{:,d} Kc'.format(df_filtered['FX'].sum()).replace(',',' '))
+
+
+@app.callback(
+    Output('info-count', 'children'),
+    [Input('month-slider', 'value')])
+def infoCount(selected_month):
+    df_filtered = df[df['month'] == selected_month]
+    return ('{:,d} x'.format(df_filtered['FX'].count()).replace(',',' '))
 
 
 if __name__ == '__main__':
