@@ -10,30 +10,31 @@ import os
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__) #external_stylesheets=external_stylesheets
 
-basedir = os.path.dirname(os.path.abspath(__file__))
-path_to_basedir = str(basedir) + '/data.csv'
+# Local data:
+# basedir = os.path.dirname(os.path.abspath(__file__))
+# path_to_basedir = str(basedir) + '/data.csv'
 
 # Tables
-df = pd.read_csv(path_to_basedir)
+df = pd.read_csv('https://raw.githubusercontent.com/GeorgePowhattan/Dash/master/Sales/data.csv')
 df['datetime'] = pd.to_datetime(df['datetime'])
 df['month'] = df['datetime'].dt.month
 
 app.layout = html.Div([
     html.Div([
-        html.H1('Sales data 2019-2020')],
+        html.H1('Sales data 2019-2020 (test)')],
         style={'width': 500, 'padding': 10} ),
     
     html.Div(children=[
         html.Div([
-            html.H3('Total earned:'),
+            html.H3('Celkové revenue za období:'),
             html.H1('{:,d} Kc'.format(df['FX'].sum()).replace(',',' '))
         ], style={'padding': 10}),
         html.Div([
-            html.H3('Total earned (selected month):'),
+            html.H3('Revenue ve vybraném měsíci:'),
             html.H1(id='info-sum-month')
         ], style={'padding': 10}),
         html.Div([
-            html.H3('Total deals (selected_month):'),
+            html.H3('Počet obchodů ve vybraném měsíci:'),
             html.H1(id='info-count') 
         ], style={'padding': 10})
     ], style={'columnCount': 3}),
@@ -64,7 +65,7 @@ app.layout = html.Div([
         ),
     dcc.Graph('graph'),
     html.Br(),
-    html.Div('Some more charts...')
+    html.Div('Další infografika...')
 
 ], style={'font-family': 'verdana'})
 
